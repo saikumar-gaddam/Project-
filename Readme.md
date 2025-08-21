@@ -1,71 +1,101 @@
 # AI-Driven Climate Change Model
 
-A master's research project developed under the University of Hertfordshire's School of Physics, Engineering and Computer Science for module 7COM1039.
+## Overview
+This Jupyter Notebook performs an analysis of global land average temperature data from 1900 onwards, sourced from the "Climate Change: Earth Surface Temperature Data" dataset (likely from Kaggle). The analysis includes:
 
-This project leverages Artificial Intelligence (AI) to forecast temperature trends, classify climate risks, and provide explainable insights using SHAP and LIME.
+- Data ingestion and preprocessing (loading CSV, cleaning, filtering to reliable years, and visualization of trends).
+- Exploratory Data Analysis (EDA) with visualizations.
+- Model performance comparison using metrics like MAE (Mean Absolute Error) and RMSE (Root Mean Squared Error) for various forecasting models:
+  - Linear Regression
+  - ARIMA
+  - Prophet
+  - LSTM (Long Short-Term Memory neural network)
+  - Random Forest (referencing Wang et al.)
+  - BPNN (Backpropagation Neural Network, referencing Vidal et al.)
 
-## Project Overview
+The notebook culminates in a bar chart comparing MAE values across these models to benchmark against recent literature.
 
-Climate change is one of the most urgent global challenges. This project builds an AI-powered climate model to:
-- Predict temperature changes
-- Classify risk levels (Low, Moderate, High, Extreme)
-- Explain model behavior using SHAP and LIME
-- Simulate future climate risk under different CO₂ emission scenarios
+The goal is to explore temperature trends and evaluate predictive models for climate forecasting.
 
-## Objectives
+## Dataset
+- Source: `/kaggle/input/climate-change-earth-surface-temperature-data/GlobalTemperatures.csv` (assumed to be from Kaggle or similar).
+- Key columns used: `dt` (date) and `LandAverageTemperature`.
+- Data filtered to years >= 1900 for reliability.
+- Preprocessing: Date conversion, sorting, handling missing values.
 
-- Build regression models to predict average temperature
-- Train classifiers to categorize climate risk
-- Use SHAP and LIME for model explainability
-- Perform scenario-based forecasting
-- Provide reproducible results via Google Colab
+## Requirements
+The notebook relies on the following Python libraries (install via `pip` if needed):
 
-## Research Questions
+- pandas (>=2.0)
+- numpy (>=1.20)
+- matplotlib (>=3.5)
+- scikit-learn (>=1.0) – for metrics like MAE, RMSE, and models like LinearRegression
+- tensorflow (>=2.0) – for LSTM model
+- statsmodels – implied for ARIMA (though not explicitly imported in visible code)
+- prophet – for Prophet model (install via `pip install prophet`)
+- warnings (standard library)
 
-1. How effectively can AI models (Random Forest, LSTM, Transformer) predict temperature based on climate indicators?
-2. What are the most influential features driving climate predictions?
-3. How can explainable AI techniques improve transparency in climate modeling?
+Full import list from the notebook:
+```python
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.metrics import mean_absolute_error, mean_squared_error, confusion_matrix, roc_curve, auc
+from sklearn.preprocessing import MinMaxScaler
+import tensorflow as tf
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import LSTM, Dense, Dropout
+import warnings
+from sklearn.linear_model import LinearRegression
+import seaborn as sns
+```
 
-## Dataset Details
+**Environment Notes:**
+- Python 3.12+ (as per execution metadata).
+- Tested on Kaggle (with GPU accelerator enabled).
+- No additional package installations are performed in the notebook (assumes pre-installed in environment like Kaggle).
 
-Dataset Source: Kaggle Climate Change Dataset by Bhadra Mohit  
-Total Samples: 1,000 rows × 10 columns  
-License: Public domain
+## How to Run
+1. **Download the Notebook:** Save the provided `.ipynb` file.
+2. **Dataset Setup:** Ensure the dataset CSV is available at the path `/kaggle/input/climate-change-earth-surface-temperature-data/GlobalTemperatures.csv`. If running locally, adjust the path in the notebook.
+3. **Install Dependencies:** Run `pip install -r requirements.txt` (create one based on the list above if needed).
+4. **Open in Jupyter:** Use Jupyter Notebook or JupyterLab:
+   ```
+   jupyter notebook saikumar-new-climateanalysis.ipynb
+   ```
+5. **Execute Cells:** Run cells sequentially (Shift+Enter). The notebook is stateful, so order matters.
+6. **Outputs:** Expect plots (e.g., temperature trends and MAE comparison bar chart) and printed data summaries.
 
-Selected Features:
-- CO₂ Emissions (Tons/Capita)
-- Sea Level Rise (mm)
-- Rainfall (mm)
-- Population
-- Renewable Energy (%)
-- Severe Meteorological Events
-- Forest Area (%)
+**Notes on Execution:**
+- The notebook sets a random seed (`np.random.seed(42)`) for reproducibility.
+- Suppresses warnings with `warnings.filterwarnings("ignore")`.
+- If running on Kaggle, enable internet and GPU for TensorFlow.
 
-Target Variables:
-- Average Temperature (°C) — for regression
-- Risk Category (Low–Extreme) — for classification
+## Results
+- **Temperature Trend Visualization:** A line plot showing monthly global land average temperatures from 1900.
+- **Model Comparison:** Bar chart of MAE values:
+  - LinearReg: 3.76
+  - ARIMA: 0.29
+  - Prophet: 0.23
+  - LSTM: 0.52
+  - Random Forest (Wang et al.): 0.018
+  - BPNN (Vidal et al.): 0.0033
+- RMSE values are partially provided (e.g., missing for Random Forest).
+- Lower MAE/RMSE indicates better performance; literature models (e.g., BPNN) outperform some implemented ones.
 
-## Tools and Libraries
+## Limitations
+- The notebook appears truncated in the provided content (e.g., full model implementations for ARIMA, Prophet, etc., may not be visible).
+- Assumes access to Kaggle dataset; local runs require manual data download.
+- No hyperparameter tuning or full cross-validation shown in visible cells.
+- Comparisons reference external papers (Wang et al., Vidal et al.) – verify citations for context.
 
-| Purpose            | Tools Used                                      |
-|--------------------|-------------------------------------------------|
-| Data Handling      | pandas, numpy                                   |
-| ML Models          | RandomForest, GradientBoosting, XGBoost         |
-| Deep Learning      | LSTM, Transformer (via TensorFlow/Keras)        |
-| Explainability     | SHAP, LIME                                      |
-| Visualization      | matplotlib, seaborn, plotly                     |
-| IDE                | Google Colab (Primary Notebook)                 |
+## Contributing
+This is a standalone analysis notebook. Fork and modify as needed. For issues, check library versions or dataset integrity.
 
-## Key Outcomes
+## License
+MIT License (assumed; adjust as per original author). Dataset may have its own terms (e.g., public domain via Kaggle).
 
-- Regression model with high R² score for temperature prediction
-- Classifier to label regions by climate risk
-- SHAP and LIME visualizations for feature influence
-- Scenario-based insights for climate forecasting
-- Reproducible Colab Notebook
-
-## Project Structure
-
+*Last Updated: August 21, 2025*
 
 ## References
 
@@ -86,3 +116,4 @@ Target Variables:
 Author: Sai kumar Gaddam 
 Email: saikumargaddam949@gmail.com
 Student ID: 23100456  
+
